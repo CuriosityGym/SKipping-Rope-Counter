@@ -47,6 +47,7 @@ int wght=50;
 unsigned long startTime=0;
 String apiKey = "M29CALS4ILHNX6W9"; //assemblage thingspeak key
 int calories=0;
+bool thingspeak = false;
 /////////////////////////
 // Network Definitions //
 /////////////////////////
@@ -257,7 +258,10 @@ void loop() {
             score = score + 1;
             counter = 0;
             playing = true;
-            if(score==1) startTime = millis();
+            if(score==1){
+              thingspeak = true;
+              startTime = millis();
+            }
             
             if(skippingRate < 100) met=8.8;
             else if(skippingRate >= 100 && skippingRate < 120) met=11.8;
@@ -293,7 +297,11 @@ void loop() {
           score = -1;
           playing=false;
           delay(100);
-          logToThingspeak(String key, calories, skippingRate, score)  
+          if(thingspeak == true){
+          logToThingspeak(apiKey, calories, skippingRate, score);
+          thingspeak = false;  
+          }
+            
         }
     }
 
