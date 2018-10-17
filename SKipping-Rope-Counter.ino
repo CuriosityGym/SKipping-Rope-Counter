@@ -93,6 +93,9 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
                 //w=String(payload);
                 //weight = w.substring(1);
                 w = String((const char *) &payload[1]);
+                wght = w.toInt();
+                //Serial.print(w);
+                //Serial.print(wght);
                 // decode rgb data
                 //uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
 
@@ -143,9 +146,9 @@ void logToThingspeak(String key, int burntCalories, int skipRate, int skips)
  
        for(byte i=0; i<7;i++){
         digitalWrite(led,LOW);
-        delay(500);
+        delay(250);
         digitalWrite(led,HIGH);
-        delay(500);
+        delay(250);
         
        }
         if(!client.available()) 
@@ -294,13 +297,14 @@ void loop() {
           //Serial.print("Activity Stop");
           digitalWrite(led,LOW);
           webSocket.sendTXT(0,"Take some rest");
-          score = -1;
-          playing=false;
-          delay(100);
           if(thingspeak == true){
           logToThingspeak(apiKey, calories, skippingRate, score);
           thingspeak = false;  
           }
+          score = -1;
+          playing=false;
+          delay(100);
+          
             
         }
     }
